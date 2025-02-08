@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="assighn.a2.DashboardController"
+      style="-fx-background-color: #f0f8ff; -fx-padding: 30;">
+
+    <!-- Title -->
+    <Label fx:id="welcomeLabel"
+           style="-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #333;"/>
+
+    <!-- Search Bar -->
+    <GridPane hgap="10" vgap="10" alignment="CENTER">
+        <Label text="Search Venue:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="searchField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <Button text="Search" onAction="#searchVenue" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+    </GridPane>
+
+    <!-- Venue List -->
+    <ListView fx:id="venueList" prefHeight="250"
+              style="-fx-border-color: #007bff; -fx-border-width: 2; -fx-border-radius: 5;"
+              onMouseClicked="#displayVenueDetails"/>
+
+    <!-- Venue Details -->
+    <VBox alignment="CENTER" spacing="10"
+          style="-fx-padding: 20; -fx-border-color: #007bff; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-color: white;">
+        <Label fx:id="venueTitle" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: #333;"/>
+        <Label fx:id="venueDetails" style="-fx-font-size: 16; -fx-text-fill: #555;"/>
+    </VBox>
+
+    <!-- Venue Management Buttons -->
+    <HBox spacing="10">
+        <Button fx:id="addVenueButton" text="Add Venue" onAction="#addVenue"
+                style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+        <Button fx:id="removeVenueButton" text="Remove Venue" onAction="#removeVenue"
+                style="-fx-background-color: #FF5722; -fx-text-fill: white;"/>
+    </HBox>
+
+    <Separator/>
+
+    <!-- User Management (Manager Only) -->
+    <VBox fx:id="userManagementSection" spacing="10" alignment="CENTER">
+        <Label fx:id="userManagementLabel" text="User Management"
+               style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+
+        <HBox spacing="10">
+            <Button fx:id="addUserButton" text="Add User" onAction="#addUser"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+            <Button fx:id="removeUserButton" text="Remove User" onAction="#removeUser"
+                    style="-fx-background-color: #FF5722; -fx-text-fill: white;"/>
+        </HBox>
+    </VBox>
+
+
+
+</VBox>
+
+
