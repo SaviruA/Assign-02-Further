@@ -99,4 +99,14 @@
                 style="-fx-background-color: #2196F3; -fx-text-fill: white;"/>
     </VBox>
 
+    <Separator/>
+
+    <!-- Management Corner Section-->
+    <Button fx:id="managementCornerButton" text="Management Corner"
+            onAction="#openManagementCorner"
+            layoutX="20" layoutY="600"
+            style="-fx-background-color: #3b5998; -fx-text-fill: white; -fx-font-size: 14px;"
+            visible="false"/>
+
+
 </VBox>
