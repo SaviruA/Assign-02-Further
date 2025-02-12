@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import java.io.BufferedReader;
@@ -216,74 +215,120 @@ public class DashboardController {
     @FXML
     private void addVenue() {
         clearDisplay(); // Clear previous info
-        TextInputDialog dialog = new TextInputDialog();
+
+        // Collect user input in a single dialog instead of multiple pop-ups
+        Dialog<VenueDetails> dialog = new Dialog<>();
         dialog.setTitle("Add Venue");
         dialog.setHeaderText("Enter Venue Details");
 
-        // Ask for venue name
-        dialog.setContentText("Venue Name:");
-        String name = dialog.showAndWait().orElse("").trim();
-        if (name.isEmpty()) return;
+        // Create input fields
+        TextField nameField = new TextField();
+        nameField.setPromptText("Venue Name");
 
-        // Ask for capacity
-        dialog.setContentText("Capacity:");
-        String capacityStr = dialog.showAndWait().orElse("").trim();
-        if (capacityStr.isEmpty()) return;
+        TextField capacityField = new TextField();
+        capacityField.setPromptText("Capacity");
 
-        // Ask for suitable_for (Event Type)
-        dialog.setContentText("Suitable For (Event Type):");
-        String suitableFor = dialog.showAndWait().orElse("").trim();
-        if (suitableFor.isEmpty()) return;
+        TextField suitableForField = new TextField();
+        suitableForField.setPromptText("Suitable For (Event Type)");
 
-        // Ask for category
-        dialog.setContentText("Category:");
-        String category = dialog.showAndWait().orElse("").trim();
-        if (category.isEmpty()) return;
+        TextField categoryField = new TextField();
+        categoryField.setPromptText("Category");
 
-        // Ask for booking price
-        dialog.setContentText("Booking Price:");
-        String bookingPriceStr = dialog.showAndWait().orElse("").trim();
-        if (bookingPriceStr.isEmpty()) return;
+        TextField bookingPriceField = new TextField();
+        bookingPriceField.setPromptText("Booking Price");
 
-        // Ask for availability (Dropdown: Available / Booked)
-        ChoiceDialog<String> availabilityDialog = new ChoiceDialog<>("Available", "Available", "Booked");
-        availabilityDialog.setTitle("Set Venue Availability");
-        availabilityDialog.setHeaderText("Choose Availability for the Venue");
-        availabilityDialog.setContentText("Availability:");
+        ChoiceBox<String> availabilityBox = new ChoiceBox<>(FXCollections.observableArrayList("Available", "Booked"));
+        availabilityBox.setValue("Available");
 
-        String availability = availabilityDialog.showAndWait().orElse("").trim();
-        if (availability.isEmpty()) return;
+        // Layout
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.add(new Label("Venue Name:"), 0, 0);
+        grid.add(nameField, 1, 0);
+        grid.add(new Label("Capacity:"), 0, 1);
+        grid.add(capacityField, 1, 1);
+        grid.add(new Label("Suitable For:"), 0, 2);
+        grid.add(suitableForField, 1, 2);
+        grid.add(new Label("Category:"), 0, 3);
+        grid.add(categoryField, 1, 3);
+        grid.add(new Label("Booking Price:"), 0, 4);
+        grid.add(bookingPriceField, 1, 4);
+        grid.add(new Label("Availability:"), 0, 5);
+        grid.add(availabilityBox, 1, 5);
 
-        try {
-            int capacity = Integer.parseInt(capacityStr);
-            int bookingPrice = Integer.parseInt(bookingPriceStr);
+        dialog.getDialogPane().setContent(grid);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-            // Insert new venue with selected availability
-            String query = "INSERT INTO venues (name, capacity, suitable_for, category, booking_price, availability) VALUES (?, ?, ?, ?, ?, ?)";
-            try (Connection con = DatabaseConnection.getConnection();
-                 PreparedStatement pstmt = con.prepareStatement(query)) {
-
-                pstmt.setString(1, name);
-                pstmt.setInt(2, capacity);
-                pstmt.setString(3, suitableFor);
-                pstmt.setString(4, category);
-                pstmt.setInt(5, bookingPrice);
-                pstmt.setString(6, availability);  // Store selected availability
-                pstmt.executeUpdate();
-
-                // Reload venues with current filters
-                loadVenues(categoryFilter.getValue(), eventTypeFilter.getValue(), availabilityFilter.getValue(), getMinCapacity(), getMaxCapacity());
-
-                venueTitle.setText(name);
-                venueDetails.setText("✅ Venue added successfully with status: " + availability);
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
+                return new VenueDetails(
+                        nameField.getText().trim(),
+                        capacityField.getText().trim(),
+                        suitableForField.getText().trim(),
+                        categoryField.getText().trim(),
+                        bookingPriceField.getText().trim(),
+                        availabilityBox.getValue()
+                );
             }
+            return null;
+        });
 
-        } catch (NumberFormatException e) {
-            venueDetails.setText("❌ Capacity and Booking Price must be numbers.");
-        } catch (SQLException e) {
-            venueDetails.setText("❌ Error adding venue: " + e.getMessage());
+        Optional<VenueDetails> result = dialog.showAndWait();
+
+        result.ifPresent(venue -> {
+            try {
+                int capacity = Integer.parseInt(venue.capacity);
+                int bookingPrice = Integer.parseInt(venue.bookingPrice);
+
+                // Insert new venue with selected availability
+                String query = "INSERT INTO venues (name, capacity, suitable_for, category, booking_price, availability) VALUES (?, ?, ?, ?, ?, ?)";
+                try (Connection con = DatabaseConnection.getConnection();
+                     PreparedStatement pstmt = con.prepareStatement(query)) {
+
+                    pstmt.setString(1, venue.name);
+                    pstmt.setInt(2, capacity);
+                    pstmt.setString(3, venue.suitableFor);
+                    pstmt.setString(4, venue.category);
+                    pstmt.setInt(5, bookingPrice);
+                    pstmt.setString(6, venue.availability);
+                    pstmt.executeUpdate();
+
+                    // Debugging logs
+                    System.out.println("✅ Venue added: " + venue.name);
+
+                    // Check for null categoryFilter before using getValue()
+                    if (categoryFilter != null && eventTypeFilter != null && availabilityFilter != null) {
+                        loadVenues(categoryFilter.getValue(), eventTypeFilter.getValue(), availabilityFilter.getValue(), getMinCapacity(), getMaxCapacity());
+                    } else {
+                        System.out.println("⚠ Warning: One or more filters are null.");
+                    }
+
+                    venueTitle.setText(venue.name);
+                    venueDetails.setText("✅ Venue added successfully with status: " + venue.availability);
+                }
+            } catch (NumberFormatException e) {
+                venueDetails.setText("❌ Capacity and Booking Price must be numbers.");
+            } catch (SQLException e) {
+                venueDetails.setText("❌ Error adding venue: " + e.getMessage());
+            }
+        });
+    }
+
+    public static class VenueDetails {
+        String name, capacity, suitableFor, category, bookingPrice, availability;
+
+        public VenueDetails(String name, String capacity, String suitableFor, String category, String bookingPrice, String availability) {
+            this.name = name;
+            this.capacity = capacity;
+            this.suitableFor = suitableFor;
+            this.category = category;
+            this.bookingPrice = bookingPrice;
+            this.availability = availability;
         }
     }
+
+
 
 
     private Integer getMinCapacity() {
@@ -602,7 +647,7 @@ public class DashboardController {
     }
 
     /**
-     * Imports venue data from a fixed CSV file.
+     * Imports venue data from CSV file.
      */
     @FXML
     private void importVenuesFromCSV() {
@@ -645,7 +690,7 @@ public class DashboardController {
                     pstmt.setString(3, suitableFor);
                     pstmt.setString(4, category);
                     pstmt.setInt(5, bookingPrice);
-                    pstmt.setString(6, availability); // Store default availability
+                    pstmt.setString(6, availability);
                     pstmt.addBatch();
                 } catch (NumberFormatException e) {
                     System.out.println("Skipping invalid line: " + line);
@@ -656,13 +701,22 @@ public class DashboardController {
             venueTitle.setText("✅ Venues Imported");
             venueDetails.setText("Venues imported successfully from CSV!");
 
-            // ** Refresh venue list with all current filters (including availability) **
-            loadVenues(categoryFilter.getValue(), eventTypeFilter.getValue(), availabilityFilter.getValue(), getMinCapacity(), getMaxCapacity());
+            // ** Ensure filters are not null before calling getValue() **
+            String selectedCategory = (categoryFilter != null) ? categoryFilter.getValue() : null;
+            String selectedEventType = (eventTypeFilter != null) ? eventTypeFilter.getValue() : null;
+            String selectedAvailability = (availabilityFilter != null) ? availabilityFilter.getValue() : null;
+
+            int minCapacity = (minCapacityFilter != null && !minCapacityFilter.getText().isEmpty()) ? Integer.parseInt(minCapacityFilter.getText()) : 0;
+            int maxCapacity = (maxCapacityFilter != null && !maxCapacityFilter.getText().isEmpty()) ? Integer.parseInt(maxCapacityFilter.getText()) : Integer.MAX_VALUE;
+
+            loadVenues(selectedCategory, selectedEventType, selectedAvailability, minCapacity, maxCapacity);
 
         } catch (IOException | SQLException e) {
             venueDetails.setText("❌ Error importing venues: " + e.getMessage());
         }
     }
+
+
 
     private void populateFilterOptions(ComboBox<String> categoryBox, ComboBox<String> eventTypeBox) {
         ObservableList<String> categories = FXCollections.observableArrayList();
