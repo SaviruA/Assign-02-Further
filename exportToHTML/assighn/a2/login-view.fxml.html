@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>login-view.fxml</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d5b778;}
+.s1 { color: #bcbec4;}
+.s2 { color: #6aab73;}
+.s3 { color: #bcbec4;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+login-view.fxml</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;?</span><span class="s1">xml version</span><span class="s2">=&quot;1.0&quot; </span><span class="s1">encoding</span><span class="s2">=&quot;UTF-8&quot;</span><span class="s0">?&gt;</span>
+<span class="s0">&lt;?</span><span class="s1">import </span><span class="s2">javafx.geometry.Insets</span><span class="s0">?&gt;</span>
+<span class="s0">&lt;?</span><span class="s1">import </span><span class="s2">javafx.scene.control.*</span><span class="s0">?&gt;</span>
+<span class="s0">&lt;?</span><span class="s1">import </span><span class="s2">javafx.scene.layout.*</span><span class="s0">?&gt;</span>
+<span class="s0">&lt;?</span><span class="s1">import </span><span class="s2">javafx.collections.FXCollections</span><span class="s0">?&gt;</span>
+<span class="s0">&lt;?</span><span class="s1">import </span><span class="s2">java.lang.String</span><span class="s0">?&gt;</span>
+
+<span class="s0">&lt;VBox </span><span class="s1">alignment</span><span class="s2">=&quot;CENTER&quot; </span><span class="s1">spacing</span><span class="s2">=&quot;20.0&quot; </span><span class="s1">xmlns:fx</span><span class="s2">=&quot;http://javafx.com/fxml&quot;</span>
+      <span class="s1">fx:controller</span><span class="s2">=&quot;assighn.a2.LoginController&quot;</span>
+      <span class="s1">style</span><span class="s2">=&quot;-fx-background-color: #f0f0f0; -fx-padding: 50;&quot;</span><span class="s0">&gt;</span>
+
+    <span class="s0">&lt;VBox </span><span class="s1">alignment</span><span class="s2">=&quot;CENTER&quot; </span><span class="s1">spacing</span><span class="s2">=&quot;15.0&quot;</span>
+          <span class="s1">style</span><span class="s2">=&quot;-fx-padding: 30; -fx-border-color: #ccc; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-color: white; -fx-alignment: center; -fx-pref-width: 400;&quot;</span><span class="s0">&gt;</span>
+
+        <span class="s0">&lt;Label </span><span class="s1">fx:id</span><span class="s2">=&quot;welcomeText&quot; </span><span class="s1">text</span><span class="s2">=&quot;Live Music Venue Matchmaker - Login&quot;</span>
+               <span class="s1">style</span><span class="s2">=&quot;-fx-font-size: 22; -fx-font-weight: bold; -fx-padding: 10;&quot;</span><span class="s0">/&gt;</span>
+
+        <span class="s0">&lt;GridPane </span><span class="s1">hgap</span><span class="s2">=&quot;10&quot; </span><span class="s1">vgap</span><span class="s2">=&quot;10&quot; </span><span class="s1">alignment</span><span class="s2">=&quot;CENTER&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;Label </span><span class="s1">text</span><span class="s2">=&quot;Username:&quot; </span><span class="s1">GridPane.rowIndex</span><span class="s2">=&quot;0&quot; </span><span class="s1">GridPane.columnIndex</span><span class="s2">=&quot;0&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;TextField </span><span class="s1">fx:id</span><span class="s2">=&quot;usernameField&quot; </span><span class="s1">GridPane.rowIndex</span><span class="s2">=&quot;0&quot; </span><span class="s1">GridPane.columnIndex</span><span class="s2">=&quot;1&quot;</span>
+                       <span class="s1">promptText</span><span class="s2">=&quot;Enter your username&quot; </span><span class="s1">style</span><span class="s2">=&quot;-fx-pref-width: 200;&quot;</span><span class="s0">/&gt;</span>
+
+            <span class="s0">&lt;Label </span><span class="s1">text</span><span class="s2">=&quot;Password:&quot; </span><span class="s1">GridPane.rowIndex</span><span class="s2">=&quot;1&quot; </span><span class="s1">GridPane.columnIndex</span><span class="s2">=&quot;0&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;PasswordField </span><span class="s1">fx:id</span><span class="s2">=&quot;passwordField&quot; </span><span class="s1">GridPane.rowIndex</span><span class="s2">=&quot;1&quot; </span><span class="s1">GridPane.columnIndex</span><span class="s2">=&quot;1&quot;</span>
+                           <span class="s1">promptText</span><span class="s2">=&quot;Enter your password&quot; </span><span class="s1">style</span><span class="s2">=&quot;-fx-pref-width: 200;&quot;</span><span class="s0">/&gt;</span>
+
+            <span class="s0">&lt;Label </span><span class="s1">text</span><span class="s2">=&quot;Login as:&quot; </span><span class="s1">GridPane.rowIndex</span><span class="s2">=&quot;2&quot; </span><span class="s1">GridPane.columnIndex</span><span class="s2">=&quot;0&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;ComboBox </span><span class="s1">fx:id</span><span class="s2">=&quot;roleComboBox&quot; </span><span class="s1">GridPane.rowIndex</span><span class="s2">=&quot;2&quot; </span><span class="s1">GridPane.columnIndex</span><span class="s2">=&quot;1&quot;</span>
+                      <span class="s1">style</span><span class="s2">=&quot;-fx-pref-width: 200;&quot;</span><span class="s0">&gt;</span>
+                <span class="s0">&lt;items&gt;</span>
+                    <span class="s0">&lt;FXCollections </span><span class="s1">fx:factory</span><span class="s2">=&quot;observableArrayList&quot;</span><span class="s0">&gt;</span>
+                        <span class="s0">&lt;String </span><span class="s1">fx:value</span><span class="s2">=&quot;Manager&quot;</span><span class="s0">/&gt;</span>
+                        <span class="s0">&lt;String </span><span class="s1">fx:value</span><span class="s2">=&quot;Staff&quot;</span><span class="s0">/&gt;</span>
+                    <span class="s0">&lt;/FXCollections&gt;</span>
+                <span class="s0">&lt;/items&gt;</span>
+            <span class="s0">&lt;/ComboBox&gt;</span>
+        <span class="s0">&lt;/GridPane&gt;</span>
+
+        <span class="s0">&lt;Button </span><span class="s1">text</span><span class="s2">=&quot;Login&quot; </span><span class="s1">onAction</span><span class="s2">=&quot;#handleLogin&quot;</span>
+                <span class="s1">style</span><span class="s2">=&quot;-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 8 16; -fx-border-radius: 5;&quot;</span><span class="s0">/&gt;</span>
+
+    <span class="s0">&lt;/VBox&gt;</span>
+<span class="s0">&lt;/VBox&gt;</span>
+
+
+
+</pre>
+</body>
+</html>
