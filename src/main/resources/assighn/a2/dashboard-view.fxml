@@ -37,6 +37,10 @@
                 style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
         <Button fx:id="removeVenueButton" text="Remove Venue" onAction="#removeVenue"
                 style="-fx-background-color: #FF5722; -fx-text-fill: white;"/>
+        <Button fx:id="importCSVButton" text="Import CSV" onAction="#importVenuesFromCSV"
+                style="-fx-background-color: #007bff; -fx-text-fill: white;"/>
+        <Button fx:id="filterButton" text="Filter" onAction="#openFilterPopup"
+                style="-fx-background-color: #ff9800; -fx-text-fill: white;"/>
     </HBox>
 
     <Separator/>
@@ -51,11 +55,9 @@
                     style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
             <Button fx:id="removeUserButton" text="Remove User" onAction="#removeUser"
                     style="-fx-background-color: #FF5722; -fx-text-fill: white;"/>
+            <Button fx:id="updateUserButton" text="Update User" onAction="#updateUser"
+                    style="-fx-background-color: #FFC107; -fx-text-fill: black;"/>
         </HBox>
     </VBox>
 
-
-
 </VBox>
-
-
