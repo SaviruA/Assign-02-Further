@@ -682,20 +682,20 @@ public class EventManagementController {
     }
 
     /**
-     * Check user role (Simulating authentication).
+     * Check user role
      */
     private boolean checkUserRole() {
-        // TODO: Replace this with real authentication logic
         String currentUserRole = getCurrentUserRole();
         return "Manager".equalsIgnoreCase(currentUserRole);
     }
 
     /**
      * Get the current user's role.
+     * This simulates retrieving user role from session/login.
      */
     private String getCurrentUserRole() {
-        // Simulating login user role retrieval
-        return "Manager"; // Replace with actual session/user retrieval logic
+        // Simulating a logged-in user. Replace this with actual authentication.
+        return "Manager";  // Example: Change this to "Staff" to test restricted access.
     }
 
     /**
@@ -703,18 +703,40 @@ public class EventManagementController {
      */
     @FXML
     private void openManagementCorner() {
+        if (!checkUserRole()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Access Denied");
+            alert.setHeaderText("🚫 Restricted Access");
+            alert.setContentText("Only managers can access the Management Corner.");
+            alert.showAndWait();
+            return;
+        }
+
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("management-dashboard.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("management-dashboard..fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
-            stage.setTitle("Management Dashboard");
+            stage.setTitle("Management Corner");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
-            System.out.println("❌ Error opening Management Corner: " + e.getMessage());
+            e.printStackTrace();
+            showErrorMessage("Error opening Management Corner: " + e.getMessage());
         }
     }
+
+    /**
+     * Display an error message.
+     */
+    private void showErrorMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("❌ An error occurred");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 
 
     @FXML
