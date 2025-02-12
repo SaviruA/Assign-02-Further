@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<VBox alignment="CENTER" spacing="15.0"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="assighn.a2.EventManagementController"
+      style="-fx-background-color: #f8f9fa; -fx-padding: 20;"
+      minWidth="1000" minHeight="750"> <!-- Reduced window size -->
+
+    <!-- Top Bar with Exit Button -->
+    <HBox alignment="CENTER_RIGHT" spacing="10">
+        <Region HBox.hgrow="ALWAYS"/> <!-- Pushes button to the right -->
+        <Button text="❌ Exit" onAction="#exitApplication"
+                style="-fx-background-color: #E53935; -fx-text-fill: white; -fx-font-weight: bold;"/>
+    </HBox>
+
+    <!-- Page Title -->
+    <Label fx:id="pageTitle" text="Manage Events"
+           style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #333;"/>
+
+    <HBox spacing="20" alignment="CENTER">
+        <!-- Events List Section -->
+        <VBox spacing="10">
+            <Label text="Available Events" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+            <ListView fx:id="eventsList" style="-fx-pref-width: 300; -fx-pref-height: 200;"
+                      onMouseClicked="#displayEventDetails"/>
+        </VBox>
+
+        <!-- Event Details Section -->
+        <VBox spacing="10">
+            <Label text="Event Details" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+            <TextArea fx:id="eventDetails" text="Select an event to view details"
+                      editable="false"
+                      wrapText="true"
+                      style="-fx-font-size: 14; -fx-pref-width: 300; -fx-pref-height: 200;
+                              -fx-padding: 5; -fx-background-color: #ffffff;
+                              -fx-border-color: #007bff; -fx-border-width: 1;"/>
+        </VBox>
+    </HBox>
+
+    <Separator/>
+
+    <!-- Auto-Matching Venue -->
+    <VBox spacing="10">
+        <Label text="Auto-Match Venue" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+        <HBox spacing="10">
+            <Button fx:id="matchVenueButton" text="Find Best Venue"
+                    onAction="#autoMatchVenue"
+                    style="-fx-background-color: #FF9800; -fx-text-fill: white;"/>
+            <TextArea fx:id="matchResult" text="Matching results will appear here..."
+                      editable="false"
+                      wrapText="true"
+                      style="-fx-font-size: 14; -fx-pref-width: 600; -fx-pref-height: 60;
+                              -fx-padding: 5; -fx-background-color: #ffffff;
+                              -fx-border-color: #007bff; -fx-border-width: 1;"/>
+        </HBox>
+    </VBox>
+
+    <Separator/>
+
+    <!-- Booking Controls -->
+    <VBox spacing="10">
+        <Label text="Booking Controls" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+        <HBox spacing="10">
+            <Button fx:id="bookVenueButton" text="Book Venue"
+                    onAction="#bookVenue"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+            <Button fx:id="cancelBookingButton" text="Cancel Booking"
+                    onAction="#cancelBooking"
+                    style="-fx-background-color: #FF5722; -fx-text-fill: white;"/>
+        </HBox>
+    </VBox>
+
+    <Separator/>
+
+    <!-- Order & Commission Section -->
+    <VBox spacing="10">
+        <Label text="Order and Commission" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+        <HBox spacing="10">
+            <Button fx:id="showOrdersButton" text="Show Orders"
+                    onAction="#showOrders"
+                    style="-fx-background-color: #3F51B5; -fx-text-fill: white;"/>
+            <Button fx:id="calculateCommissionButton" text="Calculate Commission"
+                    onAction="#calculateCommission"
+                    style="-fx-background-color: #9C27B0; -fx-text-fill: white;"/>
+        </HBox>
+    </VBox>
+
+    <Separator/>
+
+    <!-- Import CSV Section -->
+    <VBox spacing="10">
+        <Label text="Import Requests from CSV" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+        <Button fx:id="importCSVButton" text="Import CSV"
+                onAction="#importCSV"
+                style="-fx-background-color: #2196F3; -fx-text-fill: white;"/>
+    </VBox>
+
+</VBox>
