@@ -3,7 +3,10 @@ package assighn.a2;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,11 +18,13 @@ import java.sql.SQLException;
 import java.util.Optional;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import sqlitedb.DatabaseConnection;
 
 
 public class DashboardController {
 
+    public Label userManagementLabel;
     @FXML private Label welcomeLabel;
     @FXML private ListView<String> venueList;
     @FXML private TextField searchField;
@@ -40,6 +45,8 @@ public class DashboardController {
     @FXML private VBox staffAccountSection;
     @FXML private Button updateUserButton;
     @FXML private Button staffUserButton;
+    @FXML private Button exploreEventsButton;  // Declare the button
+
 
 
 
@@ -70,10 +77,6 @@ public class DashboardController {
         // Load venues based on role (default availability filter)
         loadVenues(null, null, "Available", null, null);
     }
-
-
-
-
 
     private void clearDisplayWindow(String message) {
         venueDetails.setText(message);
@@ -598,8 +601,6 @@ public class DashboardController {
         }
     }
 
-
-
     /**
      * Imports venue data from a fixed CSV file.
      */
@@ -663,8 +664,6 @@ public class DashboardController {
         }
     }
 
-
-
     private void populateFilterOptions(ComboBox<String> categoryBox, ComboBox<String> eventTypeBox) {
         ObservableList<String> categories = FXCollections.observableArrayList();
         ObservableList<String> eventTypes = FXCollections.observableArrayList();
@@ -714,9 +713,6 @@ public class DashboardController {
                 (minCapacity != null ? "Min Capacity: " + minCapacity + "\n" : "") +
                 (maxCapacity != null ? "Max Capacity: " + maxCapacity : ""));
     }
-
-
-
 
     @FXML
     private void openFilterPopup() {
@@ -778,7 +774,26 @@ public class DashboardController {
         venueDetails.setText("Select an action to see details here.");
     }
 
+    @FXML
+    private void openEventManagement() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("EventManagement.fxml"));
+            Scene scene = new Scene(loader.load());
 
+            EventManagementController controller = loader.getController();
+            controller.initializePage(); // Call any setup method in EventManagementController
+
+            Stage stage = new Stage();
+            stage.setTitle("Manage Events");
+            stage.setScene(scene);
+            stage.show();
+
+            // Close current dashboard window
+            ((Stage) exploreEventsButton.getScene().getWindow()).close();
+        } catch (IOException e) {
+            System.out.println("❌ Error loading Event Management page: " + e.getMessage());
+        }
+    }
 
 }
 
