@@ -10,10 +10,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class ImportVenuesFromCSV {
-    private static final String CSV_FILE_PATH = "src/main/resources/venues.csv"; // Update with correct path
+    private static final String CSV_FILE_PATH = "src/main/resources/venues.csv";
 
     public static void main(String[] args) {
-        String insertQuery = "INSERT INTO venues (name, capacity, suitable_for, category, booking_price) VALUES (?, ?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO venues (name, capacity, suitable_for, category, booking_price, availability) VALUES (?, ?, ?, ?, ?, 'Available')";
 
         try (Connection con = DatabaseConnection.getConnection();
              BufferedReader br = new BufferedReader(new FileReader(CSV_FILE_PATH));
@@ -28,7 +28,6 @@ public class ImportVenuesFromCSV {
                     continue; // Skip header row
                 }
 
-                // **Fix: Split by commas, while keeping text inside quotes together**
                 String[] values = line.split(",(?![^\\[]*\\])");
 
                 if (values.length < 5) {
@@ -36,29 +35,20 @@ public class ImportVenuesFromCSV {
                     continue;
                 }
 
-                String venueName = values[0].trim();
-                String capacityString = values[1].trim();
-                String suitableFor = values[2].trim();
-                String category = values[3].trim();
-                String bookingPriceString = values[4].trim();
-
                 try {
-                    int capacity = Integer.parseInt(capacityString);
-                    int bookingPrice = Integer.parseInt(bookingPriceString);
+                    pstmt.setString(1, values[0].trim()); // Venue Name
+                    pstmt.setInt(2, Integer.parseInt(values[1].trim())); // Capacity
+                    pstmt.setString(3, values[2].trim()); // Suitable For
+                    pstmt.setString(4, values[3].trim()); // Category
+                    pstmt.setInt(5, Integer.parseInt(values[4].trim())); // Booking Price
 
-                    pstmt.setString(1, venueName);
-                    pstmt.setInt(2, capacity);
-                    pstmt.setString(3, suitableFor);
-                    pstmt.setString(4, category);
-                    pstmt.setInt(5, bookingPrice);
-
-                    pstmt.addBatch(); // Add to batch
+                    pstmt.addBatch();
                 } catch (NumberFormatException e) {
                     System.out.println("Skipping line due to invalid number format: " + line);
                 }
             }
 
-            pstmt.executeBatch(); // Execute batch insert
+            pstmt.executeBatch();
             System.out.println("Venues imported successfully!");
 
         } catch (IOException | SQLException e) {
@@ -66,5 +56,6 @@ public class ImportVenuesFromCSV {
         }
     }
 }
+
 
 
