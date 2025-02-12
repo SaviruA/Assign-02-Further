@@ -2,8 +2,6 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.*?>
-
 <VBox alignment="CENTER" spacing="15.0"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="assighn.a2.EventManagementController"
