@@ -42,6 +42,14 @@
                 style="-fx-background-color: #ff9800; -fx-text-fill: white;"/>
     </HBox>
 
+    <Separator/>
+
+    <!-- Explore & Book Events Button -->
+    <VBox alignment="CENTER" spacing="10">
+        <Button fx:id="exploreEventsButton" text="Explore and Book Events" onAction="#openEventManagement"
+                style="-fx-background-color: #5C67F2; -fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10;"/>
+    </VBox>
+
     <!-- Staff Account Section -->
     <VBox fx:id="staffAccountSection" spacing="10" alignment="CENTER" visible="false">
         <Label text="Account Settings"
